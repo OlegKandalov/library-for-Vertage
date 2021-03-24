@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -119,18 +118,29 @@ public class UserControllerTest {
 
         mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+
+        String example = "this book reserved";
+        String actual = userService.takeBook(61L, 51L);
+        Assertions.assertEquals(example, actual);
     }
 
     @Test
-    //@Sql(scripts = {"/sqlFilesForTests/freeBooks.sql"})
+    @Sql(scripts = {"/sqlFilesForTests/freeBooks.sql"})
     public void takeFreeBook() throws Exception {
+        String example = "you received book";
+        String actual = userService.takeBook(81L, 71L);
+        Assertions.assertEquals(example, actual);
+    }
+
+    @Test
+    @Sql(scripts = {"/sqlFilesForTests/returnBook.sql"})
+    public void shouldReturnBook() throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/users/take/81/71")
+                .put("/users/take/45/35")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
-
 }
 
