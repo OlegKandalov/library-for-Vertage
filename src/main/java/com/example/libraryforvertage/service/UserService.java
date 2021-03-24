@@ -48,19 +48,19 @@ public class UserService implements CrudService<User> {
     }
 
     public String takeBook(Long user_id, Long book_id) {
-        Book book = bookService.getById(book_id);//bookRepository.findById(book_id).orElseThrow();
-        if (book.isFree() == false) {
-            return "this book reserved";
-        } else {
-            User user = getById(user_id);//userRepository.findById(user_id).orElseThrow();
-            book.setFree(false);
-            bookService.update(book, book_id);
+        Book book = bookRepository.findById(book_id).orElseThrow();
+        if (book.isFree() == true) {
+            User user = userRepository.findById(user_id).orElseThrow();
             List<Book> usersBook = user.getBooks();
             usersBook.add(book);
             user.setBooks(usersBook);
             update(user, user_id);
+            book.setFree(false);
+            bookService.update(book, book_id);
+            return "you received book";
+        } else {
+            return "this book reserved";
         }
-        return "you received book";
     }
 
     public void returnBook(Long user_id, Long book_id) {

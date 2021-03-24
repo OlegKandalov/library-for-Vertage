@@ -21,7 +21,7 @@ public class loadDatabase {
         return args -> {
             log.info("Preloading " + userRepository.save(new User("Misha")));
             log.info("Preloading " + userRepository.save(new User("Alex")));
-            log.info("Preloading" + bookRepository.save(new Book("Harry Potter", false)));
+            log.info("Preloading" + bookRepository.save(new Book("Harry Potter", true)));
             log.info("Preloading" + bookRepository.save(new Book("War and Peace")));
         };
     }
